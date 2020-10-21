@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  post '/tups1', to: 'tups#create_from_publication'
-  post '/tups2', to: 'tups#create_from_legal_effect'
+  post '/tups2', to: 'tups#display_publications'
 
-  root to: 'tups#index'
-  resources :tups, only: [:index, :show]
+  root to: 'tups#new'
+  resources :tups, only: [:index, :new, :show, :create]
 end

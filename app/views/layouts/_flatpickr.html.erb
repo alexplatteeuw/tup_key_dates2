@@ -1,22 +1,24 @@
-<h4 class="py-2">Transmission Universelle de Patrimoine</h4>
+<p class="pt-5">Calculer les dates clés de la TUP à partir de la date de publication désirée :</p>
 
-<%= simple_form_for :tup, url: "/tups1", 
+<%= simple_form_for @tup, url: tups_path, 
   wrapper: :search_bar_form, 
-  html: { class: 'd-flex flex-row pt-5' },
+  html: { class: 'd-flex flex-row' },
   remote: true do |f| %>
 
-    <%= f.input :publication, label: false, placeholder: "Date de publication : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
+    <%= f.input :publication, as: :string, label: false, placeholder: "Date de publication : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
     
     <%= f.button :submit, "Go", class: "btn-primary flex-shrink-1" %>
 
 <% end %>
 
-<%= simple_form_for :tup, url: "/tups2", 
-  wrapper: :search_bar_form, 
-  html: { class: 'd-flex flex-row pt-5' },
-  remote: true do |f| %>
+<p class="pt-5">Calculer les dates clés de la TUP à partir de la date d'effet désirée :</p>
 
-    <%= f.input :legal_effect, label: false, placeholder: "Date d'effet : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
+<%= simple_form_for @tup, url: "/tups2", 
+  wrapper: :search_bar_form, 
+  html: { class: 'd-flex flex-row' },
+  remote: true do |f| %>
+  
+    <%= f.input :legal_effect, as: :string, label: false, placeholder: "Date d'effet : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
     
     <%= f.button :submit, "Go", class: "btn-primary flex-shrink-1" %>
 

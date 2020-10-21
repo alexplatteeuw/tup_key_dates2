@@ -10,18 +10,15 @@ class Day < Date
     @results[:opposition_start] = self + 1
     @results[:opposition_end]   = opposition_end.is_a_day_off? ? opposition_end.next_business_day : opposition_end
     @results[:legal_effect]     = @results[:opposition_end] + 1
-    # @results.map { |k, v| "#{k}: #{v}" }
     @results
   end
 
   def find_dates_from_legal_effect
-    return "Legal effect can't be on that day" if (self - 1).is_a_day_off?
     @results                  = {}
     @results[:legal_effect]   = self
     @results[:opposition_end] = (self - 1).compute_opposition_end
     @results[:publications]   = (self - 1).compute_publication_dates
     @results
-    # @results.map { |k, v| "#{k}: #{v}" }
   end
 
   def is_a_day_off?
@@ -48,13 +45,5 @@ class Day < Date
     publications.sort
   end
 end
-
-# puts Date.parse('28/11/2019').find_dates_from_publication
-# puts ".................................................."
-# puts Date.parse('29/11/2019').find_dates_from_publication
-# puts ".................................................."
-# puts Date.parse('30/11/2019').find_dates_from_publication
-# puts ".................................................."
-# puts Date.parse('31/12/2019').find_dates_from_legal_effect
 
 
