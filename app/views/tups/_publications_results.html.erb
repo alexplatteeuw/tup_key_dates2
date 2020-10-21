@@ -1,0 +1,6 @@
+<p><%= pluralize(@results[:publications].count, "publication") %> possibles pour une date d'effet au <%= french_date(@results[:legal_effect]) %> :</p>
+<ul>
+  <% @results[:publications].each do |result| %>
+    <li><%= french_date(result) %></li>
+  <% end %>
+</ul>

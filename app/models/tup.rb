@@ -1,0 +1,2 @@
+class Tup < ApplicationRecord
+end

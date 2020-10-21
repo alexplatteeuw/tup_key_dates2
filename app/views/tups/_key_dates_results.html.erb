@@ -1,0 +1,14 @@
+<ul class="list-unstyled">
+  <li>
+    <%= "Date de publication : #{french_date(@tup.publication)}" %>
+  </li>
+  <li>
+    <%= "Début du délai d'opposition des créanciers : #{french_date(@tup.opposition_start)}" %>
+  </li>
+  <li>
+    <%= "Fin du délai d'opposition des créanciers : #{french_date(@tup.opposition_end)}" %>
+  </li>
+  <li>
+    <%= "Date d'effet de la TUP : #{french_date(@tup.legal_effect)}" %>
+  </li>
+</ul>

@@ -1,0 +1,23 @@
+<h4 class="py-2">Transmission Universelle de Patrimoine</h4>
+
+<%= simple_form_for :tup, url: "/tups1", 
+  wrapper: :search_bar_form, 
+  html: { class: 'd-flex flex-row pt-5' },
+  remote: true do |f| %>
+
+    <%= f.input :publication, label: false, placeholder: "Date de publication : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
+    
+    <%= f.button :submit, "Go", class: "btn-primary flex-shrink-1" %>
+
+<% end %>
+
+<%= simple_form_for :tup, url: "/tups2", 
+  wrapper: :search_bar_form, 
+  html: { class: 'd-flex flex-row pt-5' },
+  remote: true do |f| %>
+
+    <%= f.input :legal_effect, label: false, placeholder: "Date d'effet : #{french_date(Date.today)}", input_html: {class: "datepicker"} %>
+    
+    <%= f.button :submit, "Go", class: "btn-primary flex-shrink-1" %>
+
+<% end %>
