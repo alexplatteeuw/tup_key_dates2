@@ -2,27 +2,37 @@ require 'holidays/core_extensions/date'
 
 class Day < Date
   include Holidays::CoreExtensions::Date
+  include ActiveModel::Validations
+
+  attr_reader :opposition_end, :legal_effect, :publications, :results, :publication, :opposition_start
+
+  validate :opposition_end_not_day_off
 
   def find_dates_from_publication
-    @results                    = {}
-    opposition_end              = self + 30
-    @results[:publication]      = self
-    @results[:opposition_start] = self + 1
-    @results[:opposition_end]   = opposition_end.is_a_day_off? ? opposition_end.next_business_day : opposition_end
-    @results[:legal_effect]     = @results[:opposition_end] + 1
-    @results
+    @publication      = self
+    @opposition_start = self + 1
+    @opposition_end   = (self + 30).compute_opposition_end
+    @legal_effect     = @opposition_end + 1
+    self
   end
 
   def find_dates_from_legal_effect
-    @results                  = {}
-    @results[:legal_effect]   = self
-    @results[:opposition_end] = (self - 1).compute_opposition_end
-    @results[:publications]   = (self - 1).compute_publication_dates
-    @results
+    @legal_effect   = self
+    @opposition_end = self - 1
+    @publications   = @opposition_end.compute_publication_dates
+    if @publications.size == 1
+      @publication = @publications.first
+      @opposition_start = @publication + 1
+    end
+    self
   end
 
   def is_a_day_off?
     holiday?(:fr) || saturday? || sunday? 
+  end
+
+  def compute_opposition_end
+    is_a_day_off? ? next_business_day : self
   end
 
   def next_business_day 
@@ -31,8 +41,11 @@ class Day < Date
     test_day
   end
 
-  def compute_opposition_end
-    is_a_day_off? ? next_business_day : self
+  def opposition_end_not_day_off
+    if @opposition_end.is_a_day_off?
+      error = "Le délai d'opposition des créancier ne peut expirer un samedi, un dimanche ou un jour férié."
+      errors.add(:opposition_end, error)
+    end
   end
 
   def compute_publication_dates
@@ -46,4 +59,5 @@ class Day < Date
   end
 end
 
+# strftime("%A")
 

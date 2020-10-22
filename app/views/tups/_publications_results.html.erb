@@ -1,12 +1,10 @@
 <center>
-  <p><%= pluralize(@results[:publications].count, "publication") %> <%= "possible".pluralize(@results[:publications].count ) %> pour une date d'effet au <%= french_date(@results[:legal_effect]) %> :</p>
+  <p><%= "Il y a #{@date.publications.size} dates de publication possibles pour une date d'effet le #{french_date(@date.legal_effect)}" %> :</p>
   <ul>
   
-    <%= simple_form_for :tup, url: tups_path, wrapper_mappings: { radio_buttons: :custom_collection }, remote: true do |f| %>
+    <%= simple_form_for :day, url: "/tups1", wrapper_mappings: { radio_buttons: :custom_collection }, remote: true do |f| %>
   
-    <%= f.error_notification %>
-  
-    <%= f.input :publication, as: :radio_buttons, collection: @results[:publications].map {|publication| french_date(publication) }, wrapper: :custom_collection_inline %>
+    <%= f.input :publication, as: :radio_buttons, collection: french_date(@date.publications), wrapper: :custom_collection_inline %>
   
     <%= f.button :submit, "Go", class: "btn-primary" %>
   

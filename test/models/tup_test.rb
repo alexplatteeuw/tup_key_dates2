@@ -49,27 +49,27 @@ class TupTest < ActiveSupport::TestCase
       end
    end
    
-    test "dates computed from legal effect should be correct" do
+    # test "dates computed from legal effect should be correct" do
       
-      def find_publications(legal_effect)
-        publications = []
-        @tups.each { |tup| publications << tup[:publication] if tup[:legal_effect] == legal_effect }
-        publications.sort
-      end
+      # def find_publications(legal_effect)
+      #   publications = []
+      #   @tups.each { |tup| publications << tup[:publication] if tup[:legal_effect] == legal_effect }
+      #   publications.sort
+      # end
       
-      @tups.each do |given_tup|
-        p "given tup: #{given_tup}"
-        day = Day.parse(given_tup[:legal_effect]).find_dates_from_legal_effect
-        p "day with publications : #{day}"
-        day[:publication] = day[:publications].sample
-        day.delete(:publications)
-        p "day with sampled publication : #{day}"
-        tup = Tup.create(day)
-        p "tup : #{tup}"
+      # @tups.each do |given_tup|
+      #   p "given tup: #{given_tup}"
+      #   day = Day.parse(given_tup[:legal_effect]).find_dates_from_legal_effect
+      #   p "day with publications : #{day}"
+      #   day[:publication] = day[:publications].sample
+      #   day.delete(:publications)
+      #   p "day with sampled publication : #{day}"
+      #   tup = Tup.create(day)
+      #   p "tup : #{tup}"
         
-        assert_includes(find_publications(given_tup[:legal_effect]), tup.publication.strftime("%d/%m/%Y"))
-        assert_equal(given_tup[:end], tup.opposition_end.strftime("%d/%m/%Y"))
-        assert_equal(given_tup[:legal_effect], tup.legal_effect.strftime("%d/%m/%Y"))
-      end
-   end
+      #   assert_includes(find_publications(given_tup[:legal_effect]), tup.publication.strftime("%d/%m/%Y"))
+      #   assert_equal(given_tup[:end], tup.opposition_end.strftime("%d/%m/%Y"))
+      #   assert_equal(given_tup[:legal_effect], tup.legal_effect.strftime("%d/%m/%Y"))
+      # end
+  #  end
 end

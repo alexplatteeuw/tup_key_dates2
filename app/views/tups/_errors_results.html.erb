@@ -1,0 +1,10 @@
+<center>
+  <% if @date.errors[:opposition_end] %>
+    <span>
+      <%= "Une date d'effet le #{l(@date.opposition_end + 1, format: :long)} suppose que le délai d'opposition des créanciers expire le #{l(@date.opposition_end, format: :long)}, qui est un #{l(@date.opposition_end, format: "%A")}." %>
+    </span>
+    <% @date.errors[:opposition_end].each do |message| %>
+      <span class="help-block"><%= message %></span>
+    <% end %>
+  <% end %>
+</center>
