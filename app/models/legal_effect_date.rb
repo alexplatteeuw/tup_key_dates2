@@ -3,7 +3,7 @@ class LegalEffectDate < Date
 
   def self.find_key_dates(given_publication)
     key_dates = Tup.new
-    key_dates.legal_effect = LegalEffectDate.parse(given_publication)
+    key_dates.legal_effect = parse(given_publication)
     key_dates.opposition_end = key_dates.legal_effect - 1
     key_dates.publications = key_dates.opposition_end.compute_publication_dates
 
