@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_10_20_195817) do
   create_table "tups", force: :cascade do |t|
     t.date "legal_effect"
     t.date "opposition_start"
+    t.date "potential_opposition_end"
     t.date "opposition_end"
     t.date "publication"
     t.datetime "created_at", precision: 6, null: false

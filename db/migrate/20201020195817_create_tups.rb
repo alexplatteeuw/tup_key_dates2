@@ -3,6 +3,7 @@ class CreateTups < ActiveRecord::Migration[6.0]
     create_table :tups do |t|
       t.date :legal_effect
       t.date :opposition_start
+      t.date :potential_opposition_end
       t.date :opposition_end
       t.date :publication
 

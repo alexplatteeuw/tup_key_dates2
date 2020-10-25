@@ -12,16 +12,22 @@ class TupsController < ApplicationController
   end
 
   def create
-    @key_dates = build_key_dates(tup_params[:publication] || tup_params[:legal_effect] )
-    @tup = build_tup
+    # @key_dates = build_key_dates(tup_params[:publication] || tup_params[:legal_effect] )
+    # @tup = build_tup
+
+    if tup_params[:publication]
+      @tup = PublicationDate.find_key_dates(tup_params[:publication])
+    elsif tup_params[:legal_effect]
+      @tup = LegalEffectDate.find_key_dates(tup_params[:legal_effect])
+    end
     
     respond_to do |format|
 
-      if !@key_dates.include_valid_opposition_end?
+      if @tup.opposition_end.day_off?
 
         format.js { render 'errors'}
 
-      elsif @key_dates.include_many_publications?
+      elsif @tup.publications&.size&.> 1
 
         format.js { render 'display_publications' }
 
@@ -36,22 +42,22 @@ class TupsController < ApplicationController
 
 private
   
-  def build_key_dates(date)
-    if tup_params[:publication]
-      Date.parse(date).find_dates_from_publication
-    elsif tup_params[:legal_effect]
-      Date.parse(date).find_dates_from_legal_effect
-    end
-  end
+  # def build_key_dates(date)
+  #   if tup_params[:publication]
+  #     PublicationDate.find_key_dates(date)
+  #   elsif tup_params[:legal_effect]
+  #     LegalEffectDate.parse(date).find_dates_from_legal_effect
+  #   end
+  # end
 
-  def build_tup
-    Tup.new(
-      publication:      @key_dates.publication, 
-      opposition_start: @key_dates.opposition_start,
-      opposition_end:   @key_dates.opposition_end,
-      legal_effect:     @key_dates.legal_effect
-    )
-  end
+  # def build_tup
+  #   Tup.new(
+  #     publication:      @key_dates.publication, 
+  #     opposition_start: @key_dates.opposition_start,
+  #     opposition_end:   @key_dates.opposition_end,
+  #     legal_effect:     @key_dates.legal_effect
+  #   )
+  # end
   
   def tup_params
     params.require(:tup).permit(:publication, :legal_effect)
