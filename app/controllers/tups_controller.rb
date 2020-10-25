@@ -1,11 +1,10 @@
 class TupsController < ApplicationController
 
   def index
-    raise
   end
   
   def new
-    @day = Day.new
+    @tup = Tup.new
   end
   
   def show
@@ -13,56 +12,48 @@ class TupsController < ApplicationController
   end
 
   def create
+    @key_dates = build_key_dates(tup_params[:publication] || tup_params[:legal_effect] )
+    @tup = build_tup
+    
     respond_to do |format|
-      if @date.valid?
-        
-        @tup = Tup.new(
-          publication:    @date.publication, 
-          opposition_start: @date.opposition_start,
-          opposition_end: @date.opposition_end,
-          legal_effect:   @date.legal_effect
-        )
 
-        format.js { render 'create' }
-      else
-        format.js { render 'errors' }
+      if !@key_dates.include_valid_opposition_end?
+
+        format.js { render 'errors'}
+
+      elsif @key_dates.include_many_publications?
+
+        format.js { render 'display_publications' }
+
+      elsif @tup.valid?
+
+        format.js { render 'create'}
+        format.html { render 'show'}
+
       end
     end
   end
 
-  def compute_from_publication
-    dates_from_publication
-    create
-  end
+private
   
-  def compute_from_legal_effect
-    dates_from_legal_effect
-    if @date.publication
-      create
-    else
-      respond_to do |format|
-        if @date.valid?
-          format.js { render 'display_publications' }
-        else
-          format.js { render 'errors' }
-        end
-      end
+  def build_key_dates(date)
+    if tup_params[:publication]
+      Date.parse(date).find_dates_from_publication
+    elsif tup_params[:legal_effect]
+      Date.parse(date).find_dates_from_legal_effect
     end
   end
- 
-  private
-  
-  def dates_from_publication
-    publication = Day.parse(tup_params[:publication])
-    @date = publication.find_dates_from_publication
-  end
-  
-  def dates_from_legal_effect
-    legal_effect = Day.parse(tup_params[:legal_effect]).find_dates_from_legal_effect
-    @date = legal_effect.find_dates_from_legal_effect
+
+  def build_tup
+    Tup.new(
+      publication:      @key_dates.publication, 
+      opposition_start: @key_dates.opposition_start,
+      opposition_end:   @key_dates.opposition_end,
+      legal_effect:     @key_dates.legal_effect
+    )
   end
   
   def tup_params
-    params.require(:day).permit(:publication, :legal_effect)
+    params.require(:tup).permit(:publication, :legal_effect)
   end
 end

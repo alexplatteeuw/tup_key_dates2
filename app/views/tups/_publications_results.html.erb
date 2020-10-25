@@ -1,10 +1,10 @@
 <center>
-  <p><%= "Il y a #{@date.publications.size} dates de publication possibles pour une date d'effet le #{french_date(@date.legal_effect)}" %> :</p>
+  <p><%= "Il y a #{@key_dates.publications.size} dates de publication possibles pour une date d'effet le #{french_date(@key_dates.legal_effect)}" %> :</p>
   <ul>
   
-    <%= simple_form_for :day, url: "/tups1", wrapper_mappings: { radio_buttons: :custom_collection }, remote: true do |f| %>
+    <%= simple_form_for :tup, url: "/tups1", wrapper_mappings: { radio_buttons: :custom_collection }, remote: true do |f| %>
   
-    <%= f.input :publication, as: :radio_buttons, collection: french_date(@date.publications), wrapper: :custom_collection_inline %>
+    <%= f.input :publication, as: :radio_buttons, collection: french_date(@key_dates.publications), wrapper: :custom_collection_inline %>
   
     <%= f.button :submit, "Go", class: "btn-primary" %>
   

@@ -1,3 +1,3 @@
 class Tup < ApplicationRecord
-  validates :opposition_end, :legal_effect, :publication, :opposition_start, presence: true
+  validates :publication, :opposition_start, :opposition_end, :legal_effect, presence: true
 end
