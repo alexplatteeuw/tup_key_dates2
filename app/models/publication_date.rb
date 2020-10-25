@@ -1,5 +1,4 @@
 class PublicationDate < Date
-  attr_accessor :publication, :opposition_start, :potential_opposition_end, :opposition_end, :legal_effect
   
   def self.find_key_dates(given_publication)
     key_dates                          = Tup.new
