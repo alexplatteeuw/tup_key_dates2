@@ -1,3 +1,13 @@
 #disclaimer {
-  height: 215px;
+  height: 160px;
 }
+
+.nav-link {
+  color: $info;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: $info;
+}
+
