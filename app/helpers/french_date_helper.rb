@@ -1,9 +1,9 @@
 module FrenchDateHelper
-  def french_date(date)
+  def to_little_endian(date)
     if date.is_a? Array
-      date.map { |date| date.strftime("%d/%m/%Y") }
+      date.map { |date| l(date, format: :default) }
     elsif date.is_a? Date
-      date.strftime("%d/%m/%Y")
+      l(date, format: :default)
     end
   end
 end

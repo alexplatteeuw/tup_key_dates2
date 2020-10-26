@@ -1,0 +1,8 @@
+<% unless @tup.opposition_end == @tup.theoretical_opposition_end %>
+  <div class="alert alert-warning">
+    <p class="text-justify">
+      <%= display_time_extension_warning(@tup) %>
+    </p>
+  </div>
+<% end %>
+

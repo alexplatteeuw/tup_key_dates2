@@ -13,25 +13,23 @@ class TupsController < ApplicationController
 
   def create
 
-    @tup = if tup_params[:publication]
-      PublicationDate.find_key_dates(tup_params[:publication])
-    elsif tup_params[:legal_effect]
-      LegalEffectDate.find_key_dates(tup_params[:legal_effect])
-    end
-    
+    @tup = publication ? TupFromPublication.build(publication) : TupFromLegalEffect.build(legal_effect)
+
     respond_to do |format|
 
       if @tup.opposition_end.day_off?
 
-        format.js   { render 'errors'}
+        format.js   { render 'legal_effect_warning'}
+        format.html { render 'show'}
 
       elsif @tup.publications&.size&.> 1
 
-        format.js   { render 'display_publications' }
+        format.js   { render 'publications_options' }
+        format.html { render 'show'}
 
-      elsif @tup.valid?
+      elsif @tup.save
 
-        format.js   { render 'create'}
+        format.js   { render 'key_dates'}
         format.html { render 'show'}
 
       end
@@ -42,5 +40,13 @@ private
 
   def tup_params
     params.require(:tup).permit(:publication, :legal_effect)
+  end
+  
+  def publication
+    tup_params[:publication]
+  end
+  
+  def legal_effect
+    tup_params[:legal_effect]
   end
 end

@@ -16,11 +16,12 @@ ActiveRecord::Schema.define(version: 2020_10_20_195817) do
   enable_extension "plpgsql"
 
   create_table "tups", force: :cascade do |t|
-    t.date "legal_effect"
-    t.date "opposition_start"
-    t.date "potential_opposition_end"
-    t.date "opposition_end"
-    t.date "publication"
+    t.date "publication", null: false
+    t.date "opposition_start", null: false
+    t.date "opposition_end", null: false
+    t.date "legal_effect", null: false
+    t.date "theoretical_opposition_end"
+    t.string "publications"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

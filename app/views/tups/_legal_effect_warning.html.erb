@@ -1,0 +1,9 @@
+<center>
+  <% if @tup.opposition_end.day_off? %>
+    <div class="alert alert-danger">
+      <p class="text-justify">
+      <%= display_legal_effect_warning(@tup) %>
+      </p>
+    </div>
+  <% end %>
+</center>

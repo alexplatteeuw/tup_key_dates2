@@ -1,9 +1,0 @@
-<center>
-  <% if @tup.opposition_end.day_off? %>
-    <div class="alert alert-danger">
-      <p>
-      <%= "Une date d'effet le #{l(@tup.legal_effect, format: :long)} suppose que le délai d'opposition des créanciers expire le #{l(@tup.opposition_end, format: :long)}, qui est un #{l(@tup.opposition_end, format: "%A")}. Le délai d'opposition des créancier ne peut expirer un samedi, un dimanche ou un jour férié." %>
-      </p>
-    </div>
-  <% end %>
-</center>
