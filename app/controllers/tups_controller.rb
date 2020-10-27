@@ -13,25 +13,34 @@ class TupsController < ApplicationController
 
   def create
 
-    @tup = publication ? TupFromPublication.build(publication) : TupFromLegalEffect.build(legal_effect)
+    @tup = publication ? Tup.build_from_publication(publication) : Tup.build_from_legal_effect(legal_effect)
 
-    respond_to do |format|
+    if  @tup.errors.messages.present?
+      respond_to do |format|
+        format.js   { render 'tup_errors'}
+      end
 
-      if @tup.opposition_end.day_off?
-
+    elsif @tup.valid? && @tup.opposition_end.day_off?
+      respond_to do |format|
         format.js   { render 'legal_effect_warning'}
         format.html { render 'show'}
+      end
 
-      elsif @tup.publications&.size&.> 1
-
+    elsif @tup.valid? && @tup.publications?
+      respond_to do |format|
         format.js   { render 'publications_options' }
         format.html { render 'show'}
+      end
 
-      elsif @tup.save
-
+    elsif @tup.save
+      respond_to do |format|
         format.js   { render 'key_dates'}
         format.html { render 'show'}
+      end
 
+    else
+      respond_to do |format|
+        format.js   { render 'tup_errors'}
       end
     end
   end
