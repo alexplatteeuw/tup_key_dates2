@@ -1,7 +1,7 @@
 <p>Calculer les dates clés de la TUP à partir de la date d'effet désirée :</p>
 
 <%= simple_form_for @tup, url: tups_path, 
-  wrapper: :search_bar_form, 
+  wrapper: :search_bar_form,
   html: { class: "d-flex flex-row", id: "legal-effect-datepicker" },
   remote: true,
   authenticity_token: true do |f| %>

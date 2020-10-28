@@ -21,7 +21,8 @@ class TupsController < ApplicationController
 
     if  @tup.errors.messages.present?
       respond_to do |format|
-        format.js   { render 'tup_errors'}
+        format.js     { render 'tup_errors'}
+        format.html   { render 'new'}
       end
 
     elsif @tup.valid? && @tup.opposition_end.day_off?

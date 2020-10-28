@@ -5,12 +5,18 @@ class Tup < ApplicationRecord
   
   def self.build_from_legal_effect(date)
     Tup.new do |t|
-      t.legal_effect       = Date.parse(date)
-      t.opposition_end     = t.legal_effect - 1
-      t.publications       = t.opposition_end.compute_publications
-      if t.publications.one?
-        t.publication      = t.publications.first
-        t.opposition_start = t.publication + 1
+      begin
+        Date.parse(date)
+      rescue ArgumentError => e
+        t.errors.add(:publication, message: e)
+      else
+        t.legal_effect       = Date.parse(date)
+        t.opposition_end     = t.legal_effect - 1
+        t.publications       = t.opposition_end.compute_publications
+        if t.publications.one?
+          t.publication      = t.publications.first
+          t.opposition_start = t.publication + 1
+        end
       end
     end
   end
