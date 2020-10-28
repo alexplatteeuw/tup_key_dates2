@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root to: 'tups#new'
   
   post '/tups1', to: 'tups#compute_from_publication'
