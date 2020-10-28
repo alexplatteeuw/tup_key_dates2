@@ -2,11 +2,11 @@
 
 <%= simple_form_for @tup, url: tups_path, 
   wrapper: :search_bar_form, 
-  html: { class: 'd-flex flex-row' },
+  html: { class: "d-flex flex-row", id: "publication-datepicker" },
   remote: true,
   authenticity_token: true do |f| %>
 
-    <%= f.input :publication, as: :string, label: false, input_html: {class: "datepicker"} %>
+    <%= f.input :publication, as: :string, label: false, input_html: {class: "datepicker" } %>
     
     <%= f.button :submit, "Go", class: "btn-primary flex-shrink-1" %>
 

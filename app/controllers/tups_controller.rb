@@ -5,6 +5,10 @@ class TupsController < ApplicationController
   
   def new
     @tup = Tup.new
+    respond_to do |format|
+      format.js   { render 'new' }
+      format.html { render 'new'}
+    end
   end
   
   def show
