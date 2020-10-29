@@ -42,51 +42,54 @@ companies = [
   }
 ]
 
-puts "Now creating companies ..."
+# puts "Now creating companies ..."
 
-companies.each do |company|
-  c               = Company.new
-  c.name          = company[:name]
-  c.headquarters  = company[:headquarters]
-  c.share_capital = company[:share_capital]
-  c.siren         = company[:siren]
-  c.legal_form    = company[:legal_form]
-  c.user          = company[:user]
-  c.save!
+# companies.each do |company|
+#   c               = Company.new
+#   c.name          = company[:name]
+#   c.headquarters  = company[:headquarters]
+#   c.share_capital = company[:share_capital]
+#   c.siren         = company[:siren]
+#   c.legal_form    = company[:legal_form]
+#   c.user          = company[:user]
+#   c.save!
 
-  puts " ............................................................................................
-         company ##{Company.count}
+#   puts " ............................................................................................
+#          company ##{Company.count}
 
-         name:          #{c.name}
-         headquarters:  #{c.headquarters}
-         share_capital: #{c.share_capital}
-         siren:         #{c.siren}
-         legal_form:    #{c.legal_form}
-         user:          #{c.user}"
-end
+#          name:          #{c.name}
+#          headquarters:  #{c.headquarters}
+#          share_capital: #{c.share_capital}
+#          siren:         #{c.siren}
+#          legal_form:    #{c.legal_form}
+#          user:          #{c.user}"
+# end
 
 puts "___________________________________________________________________________________________________________________________"
 puts "Now creating one TUP..."
 
 tup = Tup.build_from_publication('29/10/2020')
-tup.save!
 
 puts "............................................................................................
       publication:      #{tup.publication}
       opposition start: #{tup.opposition_start}
       opposition end:   #{tup.opposition_end}
       legal effect:     #{tup.legal_effect}"
-puts "___________________________________________________________________________________________________________________________"
+      puts "___________________________________________________________________________________________________________________________"
+      
+      # absorbante = Company.find(1)
+      # absorbee   = Company.find(2)
+      
+      # absorbante.tup = tup
+      # absorbante.save!
+      
+      # absorbee.tup = tup
+      # absorbee.save!
 
-absorbante = Company.find(1)
-absorbee   = Company.find(2)
-
-absorbante.tup = Tup.find(1)
-absorbante.save!
-
-absorbee.tup = Tup.find(1)
-absorbee.save!
-
+      tup.companies.build([companies.first, companies.last])
+      
+      tup.save!
+      
 puts "............................................................................................
       Les sociétés participant à l'opération sont les suivantes: #{Tup.first.companies.first.name} & #{Tup.first.companies.last.name}"
 puts "___________________________________________________________________________________________________________________________"
