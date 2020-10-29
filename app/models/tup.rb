@@ -1,14 +1,15 @@
 class Tup < ApplicationRecord
-  serialize :publications, Array
-  validates :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
-  validates :opposition_end, :legal_effect, presence: true
-  
+  has_many   :companies
+  serialize  :publications, Array
+  validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
+  validates  :opposition_end, :legal_effect, presence: true
+
   def self.build_from_legal_effect(date)
     Tup.new do |t|
       begin
         Date.parse(date)
-      rescue ArgumentError => e
-        t.errors.add(:publication, message: e)
+      rescue ArgumentError
+        t.errors.add(:legal_effect, "La date renseignée n'est pas dans un format valide")
       else
         t.legal_effect       = Date.parse(date)
         t.opposition_end     = t.legal_effect - 1
@@ -25,8 +26,8 @@ class Tup < ApplicationRecord
     Tup.new do |t|
       begin
         Date.parse(date)
-      rescue ArgumentError => e
-        t.errors.add(:legal_effect, message: e)
+      rescue ArgumentError
+        t.errors.add(:publication, "La date renseignée n'est pas dans un format valide")
       else
         t.publication                = Date.parse(date)
         t.opposition_start           = t.publication + 1

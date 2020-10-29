@@ -1,15 +1,10 @@
 <div class="container d-flex justify-content-center">
-  <div class="w-75 mt-5">
+  <div class="w-75">
       <div id="content">
-        <center>
-          <h3>
-            <%= link_to "Transmission Universelle de Patrimoine", root_path, data: { turbolinks: false } %>
-          </h3>
-        </center>
-        <div class="mt-5"><%= render partial:'layouts/tup_disclaimer' %></div>
-        <div class="mt-0"><%= render partial:'layouts/flatpickr_publication'%></div>
-        <div class="mt-5"<%= render partial:'layouts/flatpickr_legal_effect'%></div>    
-        <div class="mt-5" id="results"></div>
+        <div class="mt-5"><%= render partial:'tups/tup_disclaimer' %></div>
+        <div class="mt-0"><%= render partial:'tups/calendars/flatpickr_publication'%></div>
+        <div class="mt-5"><%= render partial:'tups/calendars/flatpickr_legal_effect'%></div>
+        <div class="mt-4" id="results"></div>
       </div>
   </div>
 </div>

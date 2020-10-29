@@ -5,6 +5,8 @@
   html: { class: "d-flex flex-row", id: "legal-effect-datepicker" },
   remote: true,
   authenticity_token: true do |f| %>
+
+    <%= f.error_notification %>
   
     <%= f.input :legal_effect, as: :string, label: false, input_html: {class: "datepicker" } %>
     
