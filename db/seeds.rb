@@ -1,11 +1,22 @@
-  user = User.new
-  user.email    = 'aplatteeuw@outlook.fr'
-  user.password = '123456'
-  user.save!
+# CREATION DE L'UTILISATEUR
 
-  puts "___________________________________________________________________________________________________________________________"
-  puts "One user created (#{user}) with the following email address: #{user.email} & password: #{user.password}"
-  puts "___________________________________________________________________________________________________________________________"
+puts "#{"=" * 128}"
+puts ""
+puts "CREATION D'UN UTILISATEUR ..."
+puts ""
+
+user = User.new
+user.email    = 'aplatteeuw@outlook.fr'
+user.password = '123456'
+user.save!
+
+puts "#{"-" * 19}USER#{"-" * 19}
+
+      email    : #{User.first.email}
+      password : 123456
+      "
+
+# CREATION DES SOCIETES
 
 companies = [
   {
@@ -42,54 +53,57 @@ companies = [
   }
 ]
 
-# puts "Now creating companies ..."
+puts "#{"=" * 128}"
+puts ""
+puts "CREATION DES SOCIETES ..."
+puts ""
 
-# companies.each do |company|
-#   c               = Company.new
-#   c.name          = company[:name]
-#   c.headquarters  = company[:headquarters]
-#   c.share_capital = company[:share_capital]
-#   c.siren         = company[:siren]
-#   c.legal_form    = company[:legal_form]
-#   c.user          = company[:user]
-#   c.save!
+companies.each do |company|
+  c               = Company.new
+  c.name          = company[:name]
+  c.headquarters  = company[:headquarters]
+  c.share_capital = company[:share_capital]
+  c.siren         = company[:siren]
+  c.legal_form    = company[:legal_form]
+  c.user          = company[:user]
+  c.save!
 
-#   puts " ............................................................................................
-#          company ##{Company.count}
+  puts " #{"-" * 16}SOCIETE ##{Company.count}#{"-" * 16}
 
-#          name:          #{c.name}
-#          headquarters:  #{c.headquarters}
-#          share_capital: #{c.share_capital}
-#          siren:         #{c.siren}
-#          legal_form:    #{c.legal_form}
-#          user:          #{c.user}"
-# end
+         Dénomination   :  #{c.name}
+         Siège          :  #{c.headquarters}
+         Capital social :  #{c.share_capital}
+         Numéro siren   :  #{c.siren}
+         Forme légale   :  #{c.legal_form}
+         Utilisateur    :  #{c.user.email}
+         "
+end
 
-puts "___________________________________________________________________________________________________________________________"
-puts "Now creating one TUP..."
+# CREATION D'UNE TUP
+
+puts "#{"=" * 128}"
+puts ""
+puts "CREATION D'UNE TUP ..."
+puts ""
 
 tup = Tup.build_from_publication('29/10/2020')
 
-puts "............................................................................................
-      publication:      #{tup.publication}
-      opposition start: #{tup.opposition_start}
-      opposition end:   #{tup.opposition_end}
-      legal effect:     #{tup.legal_effect}"
-      puts "___________________________________________________________________________________________________________________________"
-      
-      # absorbante = Company.find(1)
-      # absorbee   = Company.find(2)
-      
-      # absorbante.tup = tup
-      # absorbante.save!
-      
-      # absorbee.tup = tup
-      # absorbee.save!
+puts "#{"-" * 16}DATES CLES#{"-" * 16}
 
-      tup.companies.build([companies.first, companies.last])
+      Date de publication         : #{tup.publication}
+      Début du délai d'opposition : #{tup.opposition_start}
+      Fin du délai d'opppostion   : #{tup.opposition_end}
+      Date d'effet légal          : #{tup.legal_effect}
+      "
       
+      # use tup.companies.build([companies[0], companies[1]]) if building tup from anex
+      tup.companies << Company.find_by_name('Immoprêt France')
+      tup.companies << Company.find_by_name('Invefi')
       tup.save!
       
-puts "............................................................................................
-      Les sociétés participant à l'opération sont les suivantes: #{Tup.first.companies.first.name} & #{Tup.first.companies.last.name}"
-puts "___________________________________________________________________________________________________________________________"
+      puts "#{"-" * 11}SOCIETE PARTICIPANTES#{"-" * 10}
+      
+      Absorbée   : #{Tup.first.companies.first.name}
+      Absorbante : #{Tup.first.companies.last.name}
+      "
+      
