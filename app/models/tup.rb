@@ -39,8 +39,6 @@ class Tup < ApplicationRecord
     end
   end
 
-  private
-
   def publications?
     publications && publications.size > 1
   end
@@ -58,7 +56,7 @@ class Tup < ApplicationRecord
   end
 
   def has_no_running_tup
-    if companies.first.tup || companies.last.tup
+    if Company.find(companies.first.id).tup || Company.find(companies.last.id).tup
       errors.add(:companies, "Opération de TUP déjà en cours")
     end
   end
