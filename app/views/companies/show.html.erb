@@ -1,2 +1,20 @@
-<h1>Companies#show</h1>
-<p>Find me in app/views/companies/show.html.erb</p>
+<h1><%= @company.name %></h1>
+<ul>
+    <li>
+      <b>Dénomination : </b><%=  @company.siren %>
+    </li>
+
+    <li>
+      <b>Siège : </b><%=  @company.headquarters %>
+    </li>
+
+    <li>
+      <b>Forme : </b><%=  @company.legal_form %>
+    </li>
+    
+    <li>
+      <b>Capital : </b><%=  @company.share_capital %> euros
+    </li>
+</ul>
+
+<%= link_to 'Retour', companies_path %>

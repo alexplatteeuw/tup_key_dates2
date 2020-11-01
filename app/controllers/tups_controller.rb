@@ -2,12 +2,14 @@ class TupsController < ApplicationController
 
   def index
   end
-  
+
   def new
     @tup = Tup.new
+    @companies = Company.all.where(user_id: current_user.id)
+
     respond_to do |format|
-      format.js   { render 'new' }
-      format.html { render 'new'}
+      format.js     { render 'new', locals: { date: params[:d] } }
+      format.html   { render 'new', locals: { date: params[:d] } }
     end
   end
   
@@ -18,6 +20,8 @@ class TupsController < ApplicationController
   def create
 
     @tup = publication ? Tup.build_from_publication(publication) : Tup.build_from_legal_effect(legal_effect)
+
+    @tup.companies << companies
 
     if  @tup.errors.messages.present?
       respond_to do |format|
@@ -53,7 +57,7 @@ class TupsController < ApplicationController
 private
 
   def tup_params
-    params.require(:tup).permit(:publication, :legal_effect)
+    params.require(:tup).permit(:publication, :legal_effect, :companies)
   end
   
   def publication
@@ -62,5 +66,9 @@ private
   
   def legal_effect
     tup_params[:legal_effect]
+  end
+
+  def companies
+    params.require(:tup)[:companies].reject { |c| c.empty? }.map  { |c| Company.find(c) }
   end
 end

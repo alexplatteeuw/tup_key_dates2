@@ -3,7 +3,7 @@ class Tup < ApplicationRecord
   serialize  :publications, Array
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
   validates  :opposition_end, :legal_effect, presence: true
-  validate   :has_two_companies
+  validate   :has_two_companies, :has_different_companies, :has_no_running_tup
 
   def self.build_from_legal_effect(date)
     Tup.new do |t|
@@ -39,6 +39,8 @@ class Tup < ApplicationRecord
     end
   end
 
+  private
+
   def publications?
     publications && publications.size > 1
   end
@@ -46,6 +48,18 @@ class Tup < ApplicationRecord
   def has_two_companies
     unless companies.size == 2
       errors.add(:companies, "Il manque une absorbée et une absorbante")
+    end
+  end
+
+  def has_different_companies
+    if companies.first == companies.last
+      errors.add(:companies, "Les sociétés doivent être différentes")
+    end
+  end
+
+  def has_no_running_tup
+    if companies.first.tup || companies.last.tup
+      errors.add(:companies, "Opération de TUP déjà en cours")
     end
   end
 end

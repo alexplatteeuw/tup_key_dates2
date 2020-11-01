@@ -1,0 +1,33 @@
+<div class="container pt-5">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6">
+      <div class="card border-bootstrap box-shadow mb-4">
+        <div class="card-header text-bootstrap d-flex align-items-center justify-content-between">
+          <div>
+            <strong>Bootstrap</strong> : Vertical Form<br />
+            <small class="text-muted">Renseigner le numéro siren et cliquer sur auto-compléter</small>
+          </div>
+          <div>
+            <%= button_to 'Auto-Compléter', action: 'new', class: 'btn btn-sm btn-outline-bootstrap' %>
+          </div>
+        </div>
+        <div class="card-body">
+          <%= simple_form_for @company, html: { novalidate: true }, url: companies_path do |f| %>
+
+            <%= f.error_notification %>
+
+            <%= f.input  :siren %>
+            <%= f.input  :name %>
+            <%= f.input  :headquarters %>
+            <%= f.input  :legal_form %>
+            <%= f.input  :share_capital %>
+
+            <%= f.button :submit, class: "btn-primary" %>
+            <%= f.button :button, "Cancel", type: "reset", class: "btn-outline-secondary" %>
+        
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

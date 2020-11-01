@@ -2,8 +2,7 @@
   <div class="w-75">
       <div id="content">
         <div class="mt-5"><%= render partial:'tups/tup_disclaimer' %></div>
-        <div class="mt-0"><%= render partial:'tups/calendars/flatpickr_publication'%></div>
-        <div class="mt-5"><%= render partial:'tups/calendars/flatpickr_legal_effect'%></div>
+          <div class="mt-0"><%= render partial: "tups/flatpickr", locals: { date: date } %></div>
         <div class="mt-4" id="results"></div>
       </div>
   </div>
