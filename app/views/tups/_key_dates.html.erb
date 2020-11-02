@@ -5,6 +5,12 @@
   <div class="alert alert-success my-3">
     <ul class="list-unstyled text-justify mb-0">
       <li>
+        <%= "Société Absorbante : #{@tup.companies.first.name}" %>
+      </li>
+      <li>
+        <%= "Société Absorbée : #{@tup.companies.last.name}" %>
+      </li>
+      <li>
         <%= "Date de publication : #{to_little_endian(@tup.publication)}" %>
       </li>
       <li>

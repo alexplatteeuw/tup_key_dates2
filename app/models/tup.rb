@@ -1,9 +1,12 @@
 class Tup < ApplicationRecord
   has_many   :companies
   serialize  :publications, Array
+
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
   validates  :opposition_end, :legal_effect, presence: true
-  validate   :has_two_companies, :has_different_companies, :has_no_running_tup
+  validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company
+
+  before_save :update_companies_status
 
   def self.build_from_legal_effect(date)
     Tup.new do |t|
@@ -39,25 +42,26 @@ class Tup < ApplicationRecord
     end
   end
 
+
   def publications?
     publications && publications.size > 1
   end
 
+  private
+
   def has_two_companies
-    unless companies.size == 2
-      errors.add(:companies, "Il manque une absorbée et une absorbante")
-    end
+    errors.add(:companies, "Une société absorbée et une société absorbante doivent être sélectionnées") unless companies.size == 2
   end
 
   def has_different_companies
-    if companies.first == companies.last
-      errors.add(:companies, "Les sociétés doivent être différentes")
-    end
+    errors.add(:companies, "Les sociétés absorbée et absorbante doivent être distinctes") if companies.first == companies.last
   end
 
-  def has_no_running_tup
-    if Company.find(companies.first.id).tup || Company.find(companies.last.id).tup
-      errors.add(:companies, "Opération de TUP déjà en cours")
-    end
+  def has_no_absorbed_company
+    errors.add(:companies, "#{companies.find(&:absorbed).name} a déjà / fait l'objet d'une absorption") if companies.any? { |c| c.absorbed }
+  end
+
+  def update_companies_status
+    companies.first.merging = companies.last.absorbed = true
   end
 end

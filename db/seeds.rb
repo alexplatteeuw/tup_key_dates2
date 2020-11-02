@@ -20,19 +20,19 @@ puts "#{"-" * 19}USER#{"-" * 19}
 
 companies = [
   {
-    name: 'Invefi',
-    headquarters: '37 boulevard Carnot 59000 Lille',
-    share_capital: 4_500,
-    siren: '492 485 768 R.C.S. Lille Métropole',
-    legal_form: 'société à responsabilité limitée',
-    user: User.find(1)
-  },
-  {
     name: 'Immoprêt France',
     headquarters: '37 boulevard Carnot 59000 Lille',
     share_capital: 179_980,
     siren: '502 647 142 R.C.S. Lille Métropole',
     legal_form: 'société par actions simplifiée',
+    user: User.find(1)
+  },
+  {
+    name: 'Invefi',
+    headquarters: '37 boulevard Carnot 59000 Lille',
+    share_capital: 4_500,
+    siren: '492 485 768 R.C.S. Lille Métropole',
+    legal_form: 'société à responsabilité limitée',
     user: User.find(1)
   },
   {
@@ -96,14 +96,13 @@ puts "#{"-" * 16}DATES CLES#{"-" * 16}
       Date d'effet légal          : #{tup.legal_effect}
       "
       
-      # use tup.companies.build([companies[0], companies[1]]) if building tup from anex
-      tup.companies << Company.find_by_name('Immoprêt France')
-      tup.companies << Company.find_by_name('Invefi')
-      tup.save!
-      
-      puts "#{"-" * 11}SOCIETE PARTICIPANTES#{"-" * 10}
-      
-      Absorbée   : #{Tup.first.companies.first.name}
-      Absorbante : #{Tup.first.companies.last.name}
-      "
-      
+tup.companies = Company.find(1, 2)
+tup.save!
+
+puts "#{"-" * 11}SOCIETE PARTICIPANTES#{"-" * 10}
+
+
+Absorbante : #{Tup.first.companies.where(merging: true).first.name}
+Absorbée   : #{Tup.first.companies.where(absorbed: true).first.name}
+"
+  

@@ -18,14 +18,12 @@ class TupsController < ApplicationController
   end
 
   def create
-
-    @tup = publication ? Tup.build_from_publication(publication) : Tup.build_from_legal_effect(legal_effect)
-
-    @tup.companies << companies
+    
+    build_tup
 
     if  @tup.errors.messages.present?
       respond_to do |format|
-        format.js     { render 'tup_errors'}
+        format.js     { render 'new'}
         format.html   { render 'new'}
       end
 
@@ -56,19 +54,36 @@ class TupsController < ApplicationController
 
 private
 
-  def tup_params
-    params.require(:tup).permit(:publication, :legal_effect, :companies)
-  end
-  
-  def publication
-    tup_params[:publication]
-  end
-  
-  def legal_effect
-    tup_params[:legal_effect]
+  def build_tup
+    set_key_dates
+    set_involved_companies unless companies_ids.blank?
   end
 
-  def companies
-    params.require(:tup)[:companies].reject { |c| c.empty? }.map  { |c| Company.find(c) }
+  def set_key_dates
+    if publication_param
+      @tup = Tup.build_from_publication(publication_param)
+    elsif legal_effect_param
+      @tup = Tup.build_from_legal_effect(legal_effect_param)
+    end
+  end
+
+  def set_involved_companies
+    @tup.companies = Company.find(companies_ids)
+  end
+
+  def tup_params
+    params.require(:tup).permit(:publication, :legal_effect, company_ids: [])
+  end
+
+  def publication_param
+    tup_params[:publication]
+  end
+
+  def legal_effect_param
+    tup_params[:legal_effect]
+  end
+  
+  def companies_ids
+    tup_params[:company_ids].reject { |id| id.blank? }
   end
 end
