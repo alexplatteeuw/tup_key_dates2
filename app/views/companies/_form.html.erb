@@ -4,7 +4,7 @@
       <div class="card border-bootstrap box-shadow mb-4">
         <div class="card-header text-bootstrap d-flex align-items-center justify-content-between">
           <div>
-            <strong>Bootstrap</strong> : Vertical Form<br />
+            Nouvelle société<br />
             <small class="text-muted">Renseigner le numéro siren et cliquer sur auto-compléter</small>
           </div>
           <div>
@@ -16,14 +16,14 @@
 
             <%= f.error_notification %>
 
-            <%= f.input  :siren %>
-            <%= f.input  :name %>
-            <%= f.input  :headquarters %>
-            <%= f.input  :legal_form %>
-            <%= f.input  :share_capital %>
+            <%= f.input  :siren, label: 'Siren' %>
+            <%= f.input  :name, label: 'Dénomination' %>
+            <%= f.input  :headquarters, label: 'Siège' %>
+            <%= f.input  :legal_form, label: 'Forme' %>
+            <%= f.input  :share_capital, label: 'Capital social' %>
 
-            <%= f.button :submit, class: "btn-primary" %>
-            <%= f.button :button, "Cancel", type: "reset", class: "btn-outline-secondary" %>
+            <%= f.button :submit, "Ajouter une société", class: "btn-primary" %>
+            <%= f.button :button, "Annuler", type: "reset", class: "btn-outline-secondary" %>
         
           <% end %>
         </div>
