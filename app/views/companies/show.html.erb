@@ -1,20 +1,28 @@
-<h1><%= @company.name %></h1>
 <ul>
-    <li>
-      <b>Dénomination : </b><%=  @company.siren %>
-    </li>
+      <h1><%= @company.name %></h1>
 
-    <li>
-      <b>Siège : </b><%=  @company.headquarters %>
-    </li>
+      <div class="my-2">
+        <b>Siren</b> : <%= @company.siren %>
+      </div>
 
-    <li>
-      <b>Forme : </b><%=  @company.legal_form %>
-    </li>
-    
-    <li>
-      <b>Capital : </b><%=  @company.share_capital %> euros
-    </li>
+      <div class="my-2">
+        <b>Siège social</b> : <%= @company.headquarters %>
+      </div>
+
+      <div class="my-2">
+        <b>Forme</b> : <%= @company.legal_form %>
+      </div>
+
+      <div class="my-2">
+        <b>Capital social</b> : <%= @company.share_capital %> €
+      </div>
+
+      <div class="my-2">
+        <% if @company.absorbed %>
+          La société est en cours d'absorption ou a été absorbée
+        <% end %>
+      </div>
+
+      <%= link_to 'Retour', companies_path %>
 </ul>
 
-<%= link_to 'Retour', companies_path %>

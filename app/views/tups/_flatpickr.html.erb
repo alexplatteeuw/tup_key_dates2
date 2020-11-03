@@ -3,7 +3,7 @@
     <div class="card border-bootstrap box-shadow mb-4">
       <div class="card-header text-bootstrap d-flex align-items-center justify-content-between">
         <div>
-          Créer une TUP à partir de la date <%= date == 'publication' ? "de publication" : "d'effet légal" %> désirée<br/>
+          Créer une TUP à partir de la date <%= @date == 'publication' ? "de publication" : "d'effet légal" %> désirée<br/>
           <small class="text-muted">Renseigner la date et les sociétés participantes</small>
         </div>
       </div>
@@ -15,11 +15,19 @@
 
             <%= f.error_notification %>
 
-            <%= f.input date, as: :string, label: (date == 'publication') ? "Date de publication" : "Date d'effet légal", input_html: {class: "datepicker" } %>
+            <%= f.input @date_type, as: :string, label: (@date == 'publication') ? "Date de publication" : "Date d'effet légal", input_html: {class: "datepicker" } %>
 
-            <%= f.association :companies, collection: @companies, label: 'Société Absorbante' %>
+            <%= f.association :companies, collection: @companies, selected: @merging_id || nil, label: 'Société Absorbante' %>
 
-            <%= f.association :companies, collection: @companies, label: 'Société Absorbée' %>
+            <%= f.association :companies, collection: @companies, selected: @absorbed_id || nil, label: 'Société Absorbée' %>
+
+            <% if @tup.publications? %>
+
+              <%= "Il y a #{@tup.publications.size} dates de publication possibles pour une date d'effet le #{to_little_endian(@tup.legal_effect)}" %> 
+
+              <%= f.input :publication, as: :radio_buttons, collection: to_little_endian(@tup.publications), wrapper: :custom_collection_inline %>
+
+            <% end %>
             
             <%= f.button :submit, "Créer une TUP", class: "btn-primary" %>
 

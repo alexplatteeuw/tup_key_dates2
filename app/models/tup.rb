@@ -1,10 +1,10 @@
 class Tup < ApplicationRecord
-  has_many   :companies
+  has_many   :companies, dependent: :nullify
   serialize  :publications, Array
 
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
   validates  :opposition_end, :legal_effect, presence: true
-  validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company
+  validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company, on: :create
 
   before_save :update_companies_status
 
