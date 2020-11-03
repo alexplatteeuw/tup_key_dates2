@@ -50,6 +50,22 @@ companies = [
     siren: '453 154 239 R.C.S. Bobigny',
     legal_form: 'société par actions simplifiée',    
     user: User.find(1)
+  },
+  {
+    name: 'Hestia Holding',
+    headquarters: "19 avenue de l'Opéra 75001 Paris",
+    share_capital: 126_459_576,
+    siren: '881 637 128 R.C.S. Paris',
+    legal_form: 'société par actions simplifiée',    
+    user: User.find(1)
+  },
+  {
+    name: 'Financière Holding CEP',
+    headquarters: "19 avenue de l'Opéra 75001 Paris",
+    share_capital: 379_469_128,
+    siren: '532 465 192 R.C.S. Paris',
+    legal_form: 'société par actions simplifiée',    
+    user: User.find(1)
   }
 ]
 
