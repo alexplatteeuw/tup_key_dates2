@@ -1,9 +1,37 @@
-<ul>
-  <% @companies.each do |company| %>
-    <li>
-      <%= link_to company.name,  company_path(company) %>
-      <%= link_to 'Edit', edit_company_path(company) %>
-      <%= link_to 'Delete', company_path(company), method: :delete, data: { confirm: "Are you sure?" } %>
-    </li>
+<div class="container pt-5">
+  <% @companies.each_with_index do |company, index| %>
+    <% if index.even? %>
+      <div class="row">
+    <% end %>
+        <div class="col-sm-6">
+          <div class="card m-3">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= link_to company.name, company_path(company) %>
+                </h5>
+                <%= link_to 'Edit', edit_company_path(company) %>
+                <%= link_to 'Delete', company_path(company), method: :delete, data: { confirm: "Are you sure?" } %>
+
+                <div class="my-2">
+                  <b>Siren</b> : <%= company.siren %>
+                </div>
+
+                <div class="my-2">
+                  <b>Siège social</b> : <%= company.headquarters %>
+                </div>
+
+                <div class="my-2">
+                  <b>Forme</b> : <%= company.legal_form %>
+                </div>
+
+                <div class="my-2">
+                  <b>Capital social</b> : <%= company.share_capital %> €
+                </div>
+              </div>
+          </div>
+        </div>
+    <% if index.odd? %>
+      </div>
+    <% end %>
   <% end %>
-</ul>
+</div>
