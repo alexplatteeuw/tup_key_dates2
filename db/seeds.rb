@@ -129,7 +129,16 @@ puts "#{"-" * 16}DATES CLES#{"-" * 16}
       "
       
 tup.companies = Company.find(1, 2)
+tup.save!
 
+tup = Tup.build_from_legal_effect('31/12/2020')
+
+tup.companies = Company.find(7, 4)
+tup.save!
+
+tup = Tup.build_from_legal_effect('31/12/2020')
+
+tup.companies = Company.find(7, 8)
 tup.save!
 
 puts "#{"-" * 11}SOCIETE PARTICIPANTES#{"-" * 10}

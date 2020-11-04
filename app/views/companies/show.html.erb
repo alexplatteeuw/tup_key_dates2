@@ -34,10 +34,10 @@
                 <br/>
                 <ul class="list-unstyled text-justify mb-0">
                   <li>
-                    <%= "Société Absorbante : #{tup.companies.where(merging: true).first.name}" %>
+                    <%= "Société Absorbante : #{tup.companies.find_by(merging: true).name}" %>
                   </li>
                   <li>
-                    <%= "Société Absorbée : #{tup.companies.where(absorbed: true).first.name}" %>
+                    <%= "Société Absorbée : #{tup.companies.find_by(absorbed: true).name}" %>
                   </li>
                   <li>
                     <%= "Date de publication : #{to_little_endian(tup.publication)}" %>

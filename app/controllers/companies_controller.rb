@@ -30,7 +30,8 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
-    Company.delete(@company)
+    @company = Company.find(params[:id])
+    @company.destroy
     redirect_to companies_path
   end
 
