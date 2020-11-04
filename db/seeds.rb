@@ -66,6 +66,22 @@ companies = [
     siren: '532 465 192 R.C.S. Paris',
     legal_form: 'société par actions simplifiée',    
     user: User.find(1)
+  },
+  {
+    name: 'JB Holding',
+    headquarters: "Immeuble Étoile Pleyel - 4 Allée de Seine - 93285 Saint-Denis Cedex",
+    share_capital: 49_125,
+    siren: '425 047 883 R.C.S. Bobigny',
+    legal_form: 'société par actions simplifiée',    
+    user: User.find(1)
+  },
+  {
+    name: 'A.C.E.J.B.',
+    headquarters: "Immeuble Étoile Pleyel - 4 Allée de Seine - 93285 Saint-Denis Cedex",
+    share_capital: 76_875.48,
+    siren: '402 704 514 R.C.S. Bobigny',
+    legal_form: 'société par actions simplifiée',    
+    user: User.find(1)
   }
 ]
 

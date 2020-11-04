@@ -1,12 +1,15 @@
 class Tup < ApplicationRecord
+  before_save :set_companies_status
+  before_destroy :update_companies_status
+
   has_many   :companies, dependent: :nullify
   serialize  :publications, Array
 
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
   validates  :opposition_end, :legal_effect, presence: true
+
   validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company, on: :create
 
-  before_save :update_companies_status
 
   def self.build_from_legal_effect(date)
     Tup.new do |t|
@@ -62,6 +65,10 @@ class Tup < ApplicationRecord
   end
 
   def update_companies_status
+    companies.each { |company| company.update(merging: false, absorbed: false) }
+  end
+
+  def set_companies_status
     companies.first.merging = companies.last.absorbed = true
   end
 end

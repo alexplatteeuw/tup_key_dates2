@@ -32,6 +32,12 @@ class TupsController < ApplicationController
     end
   end
 
+  def destroy
+    @tup = Tup.find(params[:id])
+    @tup.destroy
+    redirect_back(fallback_location: :back)
+  end
+
 private
 
   def build_tup
