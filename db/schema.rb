@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_150357) do
+ActiveRecord::Schema.define(version: 2020_11_04_122141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,14 +21,21 @@ ActiveRecord::Schema.define(version: 2020_11_02_150357) do
     t.string "headquarters"
     t.string "legal_form"
     t.integer "share_capital"
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "tup_id"
     t.boolean "merging", default: false
     t.boolean "absorbed", default: false
-    t.index ["tup_id"], name: "index_companies_on_tup_id"
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "company_tups", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "tup_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_tups_on_company_id"
+    t.index ["tup_id"], name: "index_company_tups_on_tup_id"
   end
 
   create_table "tups", force: :cascade do |t|
@@ -54,6 +61,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_150357) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "companies", "tups"
   add_foreign_key "companies", "users"
+  add_foreign_key "company_tups", "companies"
+  add_foreign_key "company_tups", "tups"
 end

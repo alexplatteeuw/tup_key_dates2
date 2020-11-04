@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   belongs_to :user
-  belongs_to :tup, optional: true
+  has_many :company_tups
+  has_many :tups, through: :company_tups
 
   validates :name, :siren, :headquarters, :legal_form, :share_capital, presence: true
 end

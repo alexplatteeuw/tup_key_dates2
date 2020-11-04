@@ -26,35 +26,36 @@
           </div>
 
           <div class="my-2">
-            <% if @company.absorbed %>
+            <% if @company.absorbed || @company.merging %>
+              <% @company.tups.each do |tup| %>
                 <div>
-                  Une opération de TUP est attachée à cette société :
+                  <%= @company.tups.size %> opération de TUP est attachée à cette société :
                 </div>
                 <br/>
                 <ul class="list-unstyled text-justify mb-0">
                   <li>
-                    <%= "Société Absorbante : #{@company.tup.companies.where(merging: true).first.name}" %>
+                    <%= "Société Absorbante : #{tup.companies.where(merging: true).first.name}" %>
                   </li>
                   <li>
-                    <%= "Société Absorbée : #{@company.tup.companies.where(absorbed: true).first.name}" %>
+                    <%= "Société Absorbée : #{tup.companies.where(absorbed: true).first.name}" %>
                   </li>
                   <li>
-                    <%= "Date de publication : #{to_little_endian(@company.tup.publication)}" %>
+                    <%= "Date de publication : #{to_little_endian(tup.publication)}" %>
                   </li>
                   <li>
-                    <%= "Début du délai d'opposition des créanciers : #{to_little_endian(@company.tup.opposition_start)}" %>
+                    <%= "Début du délai d'opposition des créanciers : #{to_little_endian(tup.opposition_start)}" %>
                   </li>
                   <li>
-                    <%= "Fin du délai d'opposition des créanciers : #{to_little_endian(@company.tup.opposition_end)}" %>
+                    <%= "Fin du délai d'opposition des créanciers : #{to_little_endian(tup.opposition_end)}" %>
                   </li>
                   <li>
-                    <%= "Date d'effet de la TUP : #{to_little_endian(@company.tup.legal_effect)}" %>
+                    <%= "Date d'effet de la TUP : #{to_little_endian(tup.legal_effect)}" %>
                   </li>
                   <li>
-                    <%= link_to 'Supprimer la TUP', tup_path(@company.tup), method: :delete %>
+                    <%= link_to 'Supprimer la TUP', tup_path(tup), method: :delete %>
                   </li>
                 </ul>
-
+              <% end %>
             <% end %>
           </div>
 

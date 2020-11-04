@@ -2,7 +2,9 @@ class Tup < ApplicationRecord
   before_save :set_companies_status
   before_destroy :update_companies_status
 
-  has_many   :companies, dependent: :nullify
+  has_many   :company_tups, dependent: :delete_all
+  has_many   :companies, through: :company_tups
+
   serialize  :publications, Array
 
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
@@ -10,7 +12,7 @@ class Tup < ApplicationRecord
 
   validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company, on: :create
 
-
+  # set TUP key dates from the selected legal effect
   def self.build_from_legal_effect(date)
     Tup.new do |t|
       begin
@@ -28,7 +30,8 @@ class Tup < ApplicationRecord
       end
     end
   end
-  
+
+  # set TUP key dates from the selected publication
   def self.build_from_publication(date)
     Tup.new do |t|
       begin
@@ -45,12 +48,13 @@ class Tup < ApplicationRecord
     end
   end
 
-
   def publications?
     publications && publications.size > 1
   end
 
   private
+
+  # CUSTOM VALIDATIONS
 
   def has_two_companies
     errors.add(:companies, "Une société absorbée et une société absorbante doivent être sélectionnées") unless companies.size == 2
@@ -64,11 +68,18 @@ class Tup < ApplicationRecord
     errors.add(:companies, "#{companies.find(&:absorbed).name} a déjà / fait l'objet d'une absorption") if companies.any? { |c| c.absorbed }
   end
 
-  def update_companies_status
-    companies.each { |company| company.update(merging: false, absorbed: false) }
-  end
+  # CALLBACKS
 
+  # on TUP creation
   def set_companies_status
     companies.first.merging = companies.last.absorbed = true
+  end
+
+  # on TUP deletion
+  def update_companies_status
+    merging_company = companies.find_by(merging: true)
+    merging_company.update(merging: false) unless merging_company.tups.count >= 2
+    absorbed_company = companies.find_by(absorbed: true)
+    absorbed_company.update(absorbed: false)
   end
 end

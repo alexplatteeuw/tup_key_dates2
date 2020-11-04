@@ -129,6 +129,7 @@ puts "#{"-" * 16}DATES CLES#{"-" * 16}
       "
       
 tup.companies = Company.find(1, 2)
+
 tup.save!
 
 puts "#{"-" * 11}SOCIETE PARTICIPANTES#{"-" * 10}

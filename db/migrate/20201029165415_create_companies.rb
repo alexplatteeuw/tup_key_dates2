@@ -6,7 +6,7 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
       t.string :headquarters
       t.string :legal_form
       t.integer :share_capital
-      t.references :user, foreign_key: true
+      t.references :user, null: false, foreign_key: true
       t.timestamps
     end
   end
