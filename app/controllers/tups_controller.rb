@@ -7,6 +7,7 @@ class TupsController < ApplicationController
   end
 
   def create
+    raise
     build_tup
 
     if  @tup.errors.messages.present?
@@ -54,12 +55,16 @@ private
   end
 
   def set_date_type
-    @date_type = if params[:d]
+    @date_type = 
+    
+    if params[:d]
       params[:d]
-    elsif tup_params[:legal_effect]
+    elsif params.dig(:tup, :legal_effect)
       :legal_effect
-    elsif tup_params[:publication]
+    elsif params.dig(:tup, :publication)
       :publication
+    else
+      nil
     end
   end
 

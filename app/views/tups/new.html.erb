@@ -5,7 +5,14 @@
           <%# render partial:'tups/tup_disclaimer' %>
         </div>
         <div class="mt-0">
-          <%= render partial: "tups/flatpickr" %>
+          <% if @date_type.nil? %>
+            <div class="d-flex justify-content-md-around">
+              <%= link_to "Ajouter une TUP depuis une publication", new_tup_path(d: :publication), class: 'btn btn-primary mr-2' %>
+              <%= link_to "Ajouter une TUP depuis une date d'effet légal", new_tup_path(d: :legal_effect), class: 'btn btn-primary ml-2' %>  
+            </div>
+          <% else %>
+            <%= render partial: "tups/flatpickr" %>
+          <% end %>
          </div>
         <div id="results"></div>
       </div>

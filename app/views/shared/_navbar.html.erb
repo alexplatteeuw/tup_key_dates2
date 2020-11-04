@@ -18,10 +18,23 @@
           <%= link_to "Ajouter une société", new_company_path, class: "nav-link" %>
         </li>
         <li class="nav-item">
-          <%= link_to "Ajouter une TUP depuis une publication", new_tup_path(d: :publication), class: "nav-link" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Ajouter une TUP depuis une date d'effet", new_tup_path(d: :legal_effect), class: "nav-link" %>
+          <%= link_to 'Créer une TUP', new_tup_path, class: 'nav-link', data: {target: '#createTupModal', toggle: 'modal'} %>
+          <div class="modal fade" id="createTupModal">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Ajouter une TUP</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body d-flex justify-content-md-around">
+                  <%= link_to "Depuis une date de publication", new_tup_path(d: :publication), class: 'btn btn-primary' %>
+                  <%= link_to "Pour une date d'effet donnée", new_tup_path(d: :legal_effect), class: 'btn btn-primary' %>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
         <li class="nav-item dropdown">
           <%= image_tag "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ9bM5cXrbv6p6jMiSoVtfs_4HDYJkE5DuNVQ&usqp=CAU", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
