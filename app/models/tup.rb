@@ -12,6 +12,25 @@ class Tup < ApplicationRecord
 
   validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company, on: :create
 
+  # ADD DATES TO TUP
+
+  # set TUP key dates from the selected publication
+  def self.build_from_publication(date)
+    Tup.new do |t|
+      begin
+        Date.parse(date)
+      rescue ArgumentError
+        t.errors.add(:publication, "La date renseignée n'est pas dans un format valide")
+      else
+        t.publication                = Date.parse(date)
+        t.opposition_start           = t.publication + 1
+        t.theoretical_opposition_end = t.publication + 30
+        t.opposition_end             = t.theoretical_opposition_end.compute_opposition_end
+        t.legal_effect               = t.opposition_end + 1
+      end
+    end
+  end
+
   # set TUP key dates from the selected legal effect
   def self.build_from_legal_effect(date)
     Tup.new do |t|
@@ -31,23 +50,7 @@ class Tup < ApplicationRecord
     end
   end
 
-  # set TUP key dates from the selected publication
-  def self.build_from_publication(date)
-    Tup.new do |t|
-      begin
-        Date.parse(date)
-      rescue ArgumentError
-        t.errors.add(:publication, "La date renseignée n'est pas dans un format valide")
-      else
-        t.publication                = Date.parse(date)
-        t.opposition_start           = t.publication + 1
-        t.theoretical_opposition_end = t.publication + 30
-        t.opposition_end             = t.theoretical_opposition_end.compute_opposition_end
-        t.legal_effect               = t.opposition_end + 1
-      end
-    end
-  end
-
+  # check if there are several publication dates possible for a given legal effect (may only return true if build_from_legal_effect called)
   def publications?
     publications && publications.size > 1
   end

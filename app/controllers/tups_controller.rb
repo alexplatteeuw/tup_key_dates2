@@ -7,7 +7,6 @@ class TupsController < ApplicationController
   end
 
   def create
-    raise
     build_tup
 
     if  @tup.errors.messages.present?
@@ -51,7 +50,7 @@ private
   end
 
   def set_companies
-    @companies = Company.all.where(user_id: current_user.id)
+    @companies = Company.all.where(user_id: current_user.id).sort_by { |company| company.name }
   end
 
   def set_date_type
