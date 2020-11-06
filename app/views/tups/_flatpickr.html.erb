@@ -3,7 +3,7 @@
     <div class="card border-bootstrap box-shadow mb-4">
       <div class="card-header text-bootstrap d-flex align-items-center justify-content-between">
         <div>
-          Créer une TUP à partir de la date <%= @date_type == 'publication' ? "de publication" : "d'effet légal" %> désirée<br/>
+          Créer une TUP à partir de la date <%= @date_input == 'publication' ? "de publication" : "d'effet légal" %> désirée<br/>
           <small class="text-muted">Renseigner la date et les sociétés participantes</small>
         </div>
       </div>
@@ -13,13 +13,11 @@
           remote: true,
           authenticity_token: true do |f| %>
 
-            <%= f.error_notification %>
+            <%= f.input @date_input, as: :string, label: (@date_input == 'publication') ? "Date de publication" : "Date d'effet légal", input_html: {class: "datepicker", value: params.dig(:tup)&.dig(@date_input) || Date.today } %>
 
-            <%= f.input @date_type, as: :string, label: (@date_type == 'publication') ? "Date de publication" : "Date d'effet légal", input_html: {class: "datepicker" } %>
+            <%= f.input :merging_company_id, collection: @companies, selected: @merging_company_id, label: 'Société Absorbante' %>
 
-            <%= f.association :companies, collection: @companies, selected: @merging_id || nil, label: 'Société Absorbante' %>
-
-            <%= f.association :companies, collection: @companies, selected: @absorbed_id || nil, label: 'Société Absorbée' %>
+            <%= f.input :absorbed_company_id, collection: @companies, selected: @absorbed_company_id, label: 'Société Absorbée' %>
 
             <% if @tup.publications? %>
 
@@ -36,3 +34,5 @@
     </div>
   </div>
 </div>
+
+<%#   %>

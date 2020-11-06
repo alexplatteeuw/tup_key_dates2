@@ -9,11 +9,9 @@ class Tup < ApplicationRecord
 
   validates  :publication, :opposition_start, :theoretical_opposition_end, presence: true, unless: :legal_effect?
   validates  :opposition_end, :legal_effect, presence: true
-
-  validate   :has_different_companies, :has_two_companies, :has_no_absorbed_company, on: :create
+  validates  :companies, companies: true
 
   # ADD DATES TO TUP
-
   # set TUP key dates from the selected publication
   def self.build_from_publication(date)
     Tup.new do |t|
@@ -30,7 +28,6 @@ class Tup < ApplicationRecord
       end
     end
   end
-
   # set TUP key dates from the selected legal effect
   def self.build_from_legal_effect(date)
     Tup.new do |t|
@@ -57,20 +54,6 @@ class Tup < ApplicationRecord
 
   private
 
-  # CUSTOM VALIDATIONS
-
-  def has_two_companies
-    errors.add(:companies, "Une société absorbée et une société absorbante doivent être sélectionnées") unless companies.size == 2
-  end
-
-  def has_different_companies
-    errors.add(:companies, "Les sociétés absorbée et absorbante doivent être distinctes") if companies.first == companies.last
-  end
-
-  def has_no_absorbed_company
-    errors.add(:companies, "#{companies.find(&:absorbed).name} a déjà / fait l'objet d'une absorption") if companies.any? { |c| c.absorbed }
-  end
-
   # CALLBACKS
 
   # on TUP creation
@@ -80,9 +63,9 @@ class Tup < ApplicationRecord
 
   # on TUP deletion
   def update_companies_status
-    merging_company = companies.find_by(merging: true)
-    merging_company.update(merging: false) unless merging_company.tups.count >= 2
+    merging_company  = companies.find_by(merging: true)
     absorbed_company = companies.find_by(absorbed: true)
+    merging_company.update(merging: false) unless merging_company.tups.count >= 2
     absorbed_company.update(absorbed: false)
   end
 end
