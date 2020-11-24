@@ -27,10 +27,10 @@
 
           <div class="my-2">
             <% if @company.absorbed || @company.merging %>
-              <% @company.tups.each do |tup| %>
                 <div>
                   <%= @company.tups.size %> opération de TUP est attachée à cette société :
                 </div>
+              <% @company.tups.each do |tup| %>
                 <br/>
                 <ul class="list-unstyled text-justify mb-0">
                   <li>

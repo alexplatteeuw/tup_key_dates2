@@ -1,4 +1,6 @@
 class Tup < ApplicationRecord
+  extend Computable
+
   before_save :set_companies_status
   before_destroy :update_companies_status
 
@@ -11,43 +13,7 @@ class Tup < ApplicationRecord
   validates  :opposition_end, :legal_effect, presence: true
   validates  :companies, companies: true
 
-  # ADD DATES TO TUP
-  # set TUP key dates from the selected publication
-  def self.build_from_publication(date)
-    Tup.new do |t|
-      begin
-        Date.parse(date)
-      rescue ArgumentError
-        t.errors.add(:publication, "La date renseignée n'est pas dans un format valide")
-      else
-        t.publication                = Date.parse(date)
-        t.opposition_start           = t.publication + 1
-        t.theoretical_opposition_end = t.publication + 30
-        t.opposition_end             = t.theoretical_opposition_end.compute_opposition_end
-        t.legal_effect               = t.opposition_end + 1
-      end
-    end
-  end
-  # set TUP key dates from the selected legal effect
-  def self.build_from_legal_effect(date)
-    Tup.new do |t|
-      begin
-        Date.parse(date)
-      rescue ArgumentError
-        t.errors.add(:legal_effect, "La date renseignée n'est pas dans un format valide")
-      else
-        t.legal_effect       = Date.parse(date)
-        t.opposition_end     = t.legal_effect - 1
-        t.publications       = t.opposition_end.compute_publications
-        if t.publications.one?
-          t.publication      = t.publications.first
-          t.opposition_start = t.publication + 1
-        end
-      end
-    end
-  end
-
-  # check if there are several publication dates possible for a given legal effect (may only return true if build_from_legal_effect called)
+  # check if there are several publication dates possible for a given legal effect (may only return true if compute_dates_from_legal_effect called)
   def publications?
     publications && publications.size > 1
   end

@@ -118,7 +118,7 @@ puts ""
 puts "CREATION D'UNE TUP ..."
 puts ""
 
-tup = Tup.build_from_publication('29/10/2020')
+tup = Tup.compute(publication: '29/10/2020')
 
 puts "#{"-" * 16}DATES CLES#{"-" * 16}
 
@@ -131,12 +131,12 @@ puts "#{"-" * 16}DATES CLES#{"-" * 16}
 tup.companies = Company.find(1, 2)
 tup.save!
 
-tup = Tup.build_from_legal_effect('31/12/2020')
+tup = Tup.compute(legal_effect: '31/12/2020')
 
 tup.companies = Company.find(7, 4)
 tup.save!
 
-tup = Tup.build_from_legal_effect('31/12/2020')
+tup = Tup.compute(legal_effect: '31/12/2020')
 
 tup.companies = Company.find(7, 8)
 tup.save!

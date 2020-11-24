@@ -8,10 +8,11 @@ class TupsController < ApplicationController
   end
 
   def create
-    build_tup
+    @tup = Tup.compute(publication:  tup_params[:publication], 
+                       legal_effect: tup_params[:legal_effect])
 
-    # if  @tup.errors.messages.present?
-    #   render 'new'
+    @tup.companies = Company.find([tup_params[:merging_company_id], 
+                                   tup_params[:absorbed_company_id]])
 
     if @tup.valid? && @tup.opposition_end.day_off?
       respond_to do |format|
@@ -44,11 +45,6 @@ class TupsController < ApplicationController
 
 private
 
-  def build_tup
-    set_key_dates
-    set_involved_companies
-  end
-
   def set_companies_ids
     @merging_company_id  = params.dig(:tup, :merging_company_id)
     @absorbed_company_id = params.dig(:tup, :absorbed_company_id)
@@ -60,22 +56,6 @@ private
 
   def set_date_input
     @date_input = (params[:tup]&.keys || params.values).select! { |v| v == 'publication' ||  v == 'legal_effect' }.first
-  end
-
-  def set_key_dates
-    if tup_params.include?(:publication)
-
-      @tup = Tup.build_from_publication(tup_params[:publication])
-
-    elsif tup_params.include?(:legal_effect)
-
-      @tup = Tup.build_from_legal_effect(tup_params[:legal_effect])
-
-    end
-  end
-
-  def set_involved_companies
-    @tup.companies = Company.find([tup_params[:merging_company_id], tup_params[:absorbed_company_id]])
   end
 
   def tup_params
